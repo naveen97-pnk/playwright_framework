@@ -13,6 +13,8 @@ import com.microsoft.playwright.BrowserContext;
 import com.microsoft.playwright.BrowserType;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Playwright;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 
 /**
  * Class Name: LaunchBrowser
@@ -29,8 +31,12 @@ public class LaunchBrowser {
     public LaunchBrowser() {
         this.playwright = Playwright.create();
         Browser browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(false));
-        BrowserContext browserContext = browser.newContext(new Browser.NewContextOptions().setViewportSize(1512, 823));
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize(); // Dynamic way to get the screen view
+                                                                            // port/resolution from java.awt library
+        double screenWidth = screenSize.getWidth();
+        double screenHeight = screenSize.getHeight();
+        BrowserContext browserContext = browser
+                .newContext(new Browser.NewContextOptions().setViewportSize((int) screenWidth, (int) screenHeight));
         this.page = browserContext.newPage();
     }
-
 }
